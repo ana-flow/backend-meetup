@@ -1,0 +1,56 @@
+<!-- Главная страница - "Лента" -->
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Лента спикеров</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="feed-video-wrapper">
+            <!-- Автовоспроизведение вертикального видео из MinIO -->
+            <video class="feed-bg-video" autoplay loop muted playsinline>
+                <source src="{{ .videoUrl }}" type="video/mp4">
+            </video>
+
+            <!-- Элементы поверх видео -->
+            <div class="feed-video-overlay">
+                <div class="feed-speaker-info">
+                    <div class="feed-speaker-name">{{ .speaker.FullName }}</div>
+                    <div class="feed-topic-title">{{ .speaker.TopicTitle }}</div>
+                    
+                    <!-- 2 поля по теме: Гонорар и Опыт -->
+                    <div class="feed-meta-tags">
+                        <span class="feed-tag">💰 {{ .speaker.SpeakingFee }} ₽</span>
+                        <span class="feed-tag">⭐ {{ .speaker.ExperienceYears }} лет опыта</span>
+                    </div>
+
+                    <div class="feed-topic-description">{{ .speaker.TopicDescription }}</div>
+                </div>
+
+                <!-- Правая боковая колонка с иконками -->
+                <div class="feed-action-sidebar">
+                    <div class="feed-action-btn">
+                        ❤️
+                        <span class="feed-btn-count">{{ .speaker.LikesCount }}</span>
+                    </div>
+                    
+                    <!-- Кнопка перехода к следующему спикеру -->
+                    <a href="/feed?id={{ .speaker.ID }}&next=true" class="feed-action-btn" title="Следующий">
+                        ➔
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Нижняя навигационная панель -->
+        <nav class="tabbar">
+            <a href="/feed" class="tab-item active">🎬<span>Лента</span></a>
+            <a href="/draft" class="tab-item">➕<span>Добавление</span></a>
+            <a href="/catalog" class="tab-item">🧱<span>Плитка</span></a>
+        </nav>
+    </div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!-- Страница "Плитка" -->
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Плитка спикеров</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="page-content">
+            <h2 class="page-title">Все спикеры</h2>
+
+            <!-- Поле поиска/фильтрации по опыту -->
+            <form action="/catalog" method="GET" class="catalog-filter-form">
+                <div style="flex: 1;">
+                    <label style="display: block; font-size: 11px; color: #64748B; margin-bottom: 4px; font-weight: 600;">Минимальный опыт (в годах):</label>
+                    <input type="number" name="min_experience" class="form-control" 
+                           placeholder="Например: 5" min="0" value="{{ .minExperience }}">
+                </div>
+                <button type="submit" class="catalog-search-btn">Поиск</button>
+            </form>
+
+            <!-- Плитка карточек в 2 столбца -->
+            <div class="catalog-grid">
+                {{ range .speakers }}
+                <a href="/feed?id={{ .speaker.ID }}" class="catalog-speaker-card">
+                    <img src="{{ .avatarUrl }}" class="catalog-card-thumb" alt="Аватар">
+                    <div class="catalog-card-body">
+                        <div class="catalog-card-name">{{ .speaker.FullName }}</div>
+                        <div class="catalog-card-topic">{{ .speaker.TopicTitle }}</div>
+                        <div class="catalog-card-footer-info">
+                            <span>❤️ {{ .speaker.LikesCount }}</span>
+                            <span>⭐ {{ .speaker.ExperienceYears }} л.</span>
+                        </div>
+                    </div>
+                </a>
+                {{ end }}
+            </div>
+        </div>
+
+        <!-- Нижняя навигационная панель -->
+        <nav class="tabbar">
+            <a href="/feed" class="tab-item">🎬<span>Лента</span></a>
+            <a href="/draft" class="tab-item">➕<span>Добавление</span></a>
+            <a href="/catalog" class="tab-item active">🧱<span>Плитка</span></a>
+        </nav>
+    </div>
+</body>
+</html>

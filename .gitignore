@@ -1,0 +1,26 @@
+# Исполняемые файлы Go (бинарники):
+*.exe
+*.exe;
+*.dll
+*.so
+*.dylib
+main
+
+# Временные файлы и сборка:
+bin/
+dist/
+*.test
+*.out
+
+# Файлы IDE и редакторов:
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Системные файлы:
+.DS_Store
+Thumbs.db

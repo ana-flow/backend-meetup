@@ -1,0 +1,340 @@
+/* Подключение шрифта Inter через Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Переменные стилей */
+:root {
+    --primary-color: #0B1B3D;     /* тёмно-синий основной */
+    --accent-color: #2bb673;      /* фирменный зеленый A-Speakers */
+    --accent-hover: #249a60;       /* оттенок зеленого при нажатии */
+    --bg-card-color: #F4F6F9;
+    --text-dark: #1E293B;
+    --text-light: #FFFFFF;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+    background-color: #121212;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Мобильный контейнер (iPhone 14) */
+.app-container {
+    width: 390px;
+    height: 844px;
+    background-color: #000;
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- "Лента" --- */
+
+/* Блок-контейнер, координатная сетка для наложения градиента и текста поверх видео */
+.feed-video-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Видео, растянутое на 100% ширины и 100% высоты обёртки */ 
+.feed-bg-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Градиент затемнения поверх видео в Ленте (для читемости текста) */
+.feed-video-overlay {
+    position: absolute;
+    bottom: 60px;
+    left: 0;
+    right: 0;
+    top: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 100%);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 20px;
+}
+
+.feed-speaker-info {
+    color: var(--text-light);
+    max-width: 75%;
+}
+
+.feed-speaker-name {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.feed-topic-title {
+    font-size: 14px;
+    color: #FF6B35;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* Плашки (стоимость и опыт) */
+.feed-meta-tags {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+/* Те же плашки */
+.feed-tag {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+/*  */
+.feed-topic-description {
+    font-size: 12px;
+    opacity: 0.9;
+    line-height: 1.4;
+}
+
+/* Боковая панель с кнопками (Лента) */
+.feed-action-sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+/* Зеленые круглые кнопки (Лайки и Следующий) */
+.feed-action-btn {
+    background: var(--accent-color);
+    border: none;
+    color: var(--primary-color); /* темно-синий текст внутри */
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 700;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+/* При наведении текст становится белыми: */
+.feed-action-btn:hover {
+    color: #FFFFFF;
+    background: var(--accent-hover);
+    transform: scale(1.05);
+}
+
+.feed-btn-count {
+    font-size: 11px;
+    font-weight: 700;
+    margin-top: 1px;
+    color: inherit; /* Наследует цвет родителя (синий -> белый) */
+}
+
+/* --- Контейнер страниц Добавление и Плитка --- */
+.page-content {
+    flex: 1;
+    background-color: var(--bg-card-color);
+    padding: 20px;
+    padding-top: 48px; /* Отступ 48px под вырез iPhone 14 */
+    overflow-y: auto;
+    padding-bottom: 80px;
+}
+
+.page-title {
+    color: var(--primary-color);
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.draft-form-group {
+    margin-bottom: 14px;
+}
+
+.draft-form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+}
+
+/* Капсульные / скругленные поля ввода */
+.form-control {
+    width: 100%;
+    padding: 10px 16px;
+    border: 1px solid #CBD5E1;
+    border-radius: 20px;
+    font-size: 14px;
+    background-color: white;
+    outline: none;
+}
+
+.form-control:focus {
+    border-color: #CBD5E1;
+    outline: none;
+}
+
+textarea.form-control {
+    border-radius: 12px; /* для многострочного поля делаем более прямоугольным */
+}
+
+/* Блок-обёртка для двух медиа - аватарки и видео */
+.media-preview-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+/* Прямоугольный бокс для медиа (аватарка/видео) */
+.media-preview-box {
+    flex: 1;
+    height: 120px;
+    background: #E2E8F0;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+}
+
+.media-preview-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.media-preview-box video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-color: #000;
+}
+
+/* --- "Плитка" --- */
+.catalog-filter-form {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    align-items: flex-end;
+}
+
+/* Кнопка "Поиск" в Плитке */
+.catalog-search-btn {
+    background-color: var(--accent-color);
+    color: var(--primary-color); /* Основной темно-синий цвет текста */
+    border: none;
+    border-radius: 20px; /* Скругленная форма в тон полю ввода */
+    padding: 0 18px;
+    height: 38px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+/* При наведении текст кнопки становится белым */
+.catalog-search-btn:hover {
+    color: #FFFFFF;
+    background-color: var(--accent-hover);
+}
+
+/* Двухколоночная сетка для карточек */
+.catalog-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.catalog-speaker-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s;
+}
+
+.catalog-speaker-card:hover {
+    transform: translateY(-4px);
+}
+
+/* Картинка-превью (аватар) */
+.catalog-card-thumb {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+}
+
+.catalog-card-body {
+    padding: 10px;
+}
+
+.catalog-card-name {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--primary-color);
+}
+
+.catalog-card-topic {
+    font-size: 11px;
+    color: #64748B;
+    margin-top: 2px;
+}
+
+.catalog-card-footer-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    margin-top: 8px;
+    font-weight: 600;
+    color: #FF6B35;
+}
+
+/* --- Tabbar --- */
+.tabbar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: var(--primary-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    z-index: 10;
+}
+
+.tab-item {
+    color: #94A3B8;
+    text-decoration: none;
+    font-size: 11px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.tab-item.active {
+    color: #FF6B35;
+    font-weight: 600;
+}

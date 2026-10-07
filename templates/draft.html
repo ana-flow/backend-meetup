@@ -1,0 +1,62 @@
+<!-- Страница "Добавление" (черновик заявки)-->
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление спикера</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="page-content">
+            <h2 class="page-title">Новая заявка спикера</h2>
+
+            <!-- Вывод аватара и видео черновика из MinIO -->
+            <div class="media-preview-container">
+                <div class="media-preview-box">
+                    <img src="{{ .avatarUrl }}" alt="Аватар">
+                </div>
+                <div class="media-preview-box">
+                    <video autoplay loop muted playsinline>
+                        <source src="{{ .videoUrl }}" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+
+            <!-- Раздельные поля формы черновика -->
+            <div class="draft-form-group">
+                <label>ФИО Спикера</label>
+                <input type="text" class="form-control" value="{{ .speaker.FullName }}">
+            </div>
+
+            <div class="draft-form-group">
+                <label>Тема доклада</label>
+                <input type="text" class="form-control" value="{{ .speaker.TopicTitle }}">
+            </div>
+
+            <div class="draft-form-group">
+                <label>Гонорар (руб.)</label>
+                <input type="number" class="form-control" min="0" value="{{ .speaker.SpeakingFee }}">
+            </div>
+
+            <div class="draft-form-group">
+                <label>Опыт работы (лет)</label>
+                <input type="number" class="form-control" min="0" value="{{ .speaker.ExperienceYears }}">
+            </div>
+
+            <div class="draft-form-group">
+                <label>Описание доклада</label>
+                <textarea class="form-control" rows="3">{{ .speaker.TopicDescription }}</textarea>
+            </div>
+        </div>
+
+        <!-- Нижняя навигационная панель -->
+        <nav class="tabbar">
+            <a href="/feed" class="tab-item">🎬<span>Лента</span></a>
+            <a href="/draft" class="tab-item active">➕<span>Добавление</span></a>
+            <a href="/catalog" class="tab-item">🧱<span>Плитка</span></a>
+        </nav>
+    </div>
+</body>
+</html>
