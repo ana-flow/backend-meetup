@@ -12,26 +12,30 @@
         <div class="page-content">
             <h2 class="page-title">Все спикеры</h2>
 
-            <!-- Поле поиска/фильтрации по опыту -->
+            <!-- Фильтрация по опыту -->
             <form action="/catalog" method="GET" class="catalog-filter-form">
-                <div style="flex: 1;">
-                    <label style="display: block; font-size: 11px; color: #64748B; margin-bottom: 4px; font-weight: 600;">Минимальный опыт (в годах):</label>
-                    <input type="number" name="min_experience" class="form-control" 
-                           placeholder="Например: 5" min="0" value="{{ .minExperience }}">
+                <span class="catalog-filter-label">Опыт (в годах):</span>
+                <div class="filter-slider-container">
+                    <input type="range" name="min_experience" class="filter-range-input" 
+                           min="0" max="15" value="{{ if .minExperience }}{{ .minExperience }}{{ else }}0{{ end }}"
+                           oninput="document.getElementById('exp-val').innerText = this.value + ' л.'">
+                    <span id="exp-val" class="filter-value-badge">{{ if .minExperience }}{{ .minExperience }}{{ else }}0{{ end }} л.</span>
                 </div>
-                <button type="submit" class="catalog-search-btn">Поиск</button>
+                <button type="submit" class="catalog-search-btn">Применить</button>
             </form>
 
-            <!-- Плитка карточек в 2 столбца -->
+            <!-- Плитка карточек -->
             <div class="catalog-grid">
                 {{ range .speakers }}
                 <a href="/feed?id={{ .speaker.ID }}" class="catalog-speaker-card">
                     <img src="{{ .avatarUrl }}" class="catalog-card-thumb" alt="Аватар">
                     <div class="catalog-card-body">
-                        <div class="catalog-card-name">{{ .speaker.FullName }}</div>
-                        <div class="catalog-card-topic">{{ .speaker.TopicTitle }}</div>
+                        <div>
+                            <div class="catalog-card-name">{{ .speaker.FullName }}</div>
+                            <div class="catalog-card-topic">{{ .speaker.TopicTitle }}</div>
+                        </div>
                         <div class="catalog-card-footer-info">
-                            <span>❤️ {{ .speaker.LikesCount }}</span>
+                            <span>❤️ {{ .likesCount }}</span>
                             <span>⭐ {{ .speaker.ExperienceYears }} л.</span>
                         </div>
                     </div>

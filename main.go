@@ -1,9 +1,10 @@
 package main
 
 import (
-	"fmt" // используется для форматирования строк (например, сборки URL-ссылок)
+	"fmt"      // используется для форматирования строк (например, сборки URL-ссылок)
 	"net/http" // содержит константы HTTP-статусов (200 OK, 404 Not Found)
-	"strconv" // strconv превращает строки в числа и наоборот (для параметров запроса ?id=1)
+	"strconv"  // strconv превращает строки в числа и наоборот (для параметров запроса ?id=1)
+
 	"github.com/gin-gonic/gin" // веб-фреймворк для языка Go
 )
 
@@ -11,94 +12,99 @@ import (
 // Используется для формирования прямых ссылок на медиафайлы.
 const MinioBaseURL = "http://localhost:9000/meetup-bucket"
 
-// AiSpeaker - структура (struct) в Go
+// Speaker - структура (struct) в Go
 // Описывает сущность "Спикер по ИИ" по предметной области.
 // Все поля пишутся с большой буквы, чтобы Go разрешил их чтение снаружи (публичные поля).
-type AiSpeaker struct {
+type Speaker struct {
 	ID              int    `json:"id"`
-	FullName        string `json:"fullName"` 
+	FullName        string `json:"fullName"`
 	TopicTitle      string `json:"topicTitle"`
-	TopicDescription  string `json:"topicDescription"`  // Подробное описание
-	SpeakingFee     int    `json:"speakingFee"`     // Поле 1 по теме: Цена/Гонорар в рублях
-	ExperienceYears int    `json:"experienceYears"` // Поле 2 по теме: Опыт работы в годах (для фильтрации)
+	Description     string `json:"description"`     // Единое поле: Описание спикера (экспертиза, био)
+	BirthDate       string `json:"birthDate"`       // Поле 1 по теме: Дата рождения "ДД.ММ.ГГГГ"
+	ExperienceYears int    `json:"experienceYears"` // Поле 2 по теме: Опыт работы в годах
 	SpeakerStatus   string `json:"speakerStatus"`   // Статус: "DRAFT", "PUBLISHED", "DELETED"
 	VideoKey        string `json:"videoKey"`        // Ключ видеофайла в MinIO
 	AvatarKey       string `json:"avatarKey"`       // Ключ изображения в MinIO
-	LikesCount      int    `json:"likesCount"`      // Количество лайков
+	Likes           []int  `json:"likes"`           // Срез ID пользователей, поставивших лайки
 }
 
-// VideoURL - метод структуры AiSpeaker. Возвращает полную ссылку на видео из MinIO.
-func (s AiSpeaker) VideoURL() string {
+// VideoURL - метод структуры Speaker. Возвращает полную ссылку на видео из MinIO.
+func (s Speaker) VideoURL() string {
 	return fmt.Sprintf("%s/%s", MinioBaseURL, s.VideoKey)
 }
 
-// AvatarURL - метод структуры AiSpeaker. Возвращает полную ссылку на аватарку из MinIO.
-func (s AiSpeaker) AvatarURL() string {
+// AvatarURL - метод структуры Speaker. Возвращает полную ссылку на аватарку из MinIO.
+func (s Speaker) AvatarURL() string {
 	return fmt.Sprintf("%s/%s", MinioBaseURL, s.AvatarKey)
 }
 
-// speakersCollection - массив (срез/slice в Go) с тестовыми данными.
+// LikesCount - вычисляемый метод возвращает количество лайков через len()
+func (s Speaker) LikesCount() int {
+	return len(s.Likes)
+}
+
+// Speakers - массив (срез/slice в Go) с тестовыми данными.
 // Данные хранятся прямо в памяти сервера без использования базы данных.
-var speakersCollection = []AiSpeaker{
+var Speakers = []Speaker{
 	{
 		ID:              1,
 		FullName:        "Алекс Мерсер",
 		TopicTitle:      "LLM в продакшене",
-		TopicDescription:  "Как урезать затраты на API OpenAI в 5 раз при запуске локальных LLM на собственных серверах.",
-		SpeakingFee:     15000,
+		Description:     "Эксперт по оптимизации и локальному запуску LLM с 7-летним опытом разработки ИИ-систем.",
+		BirthDate:       "14.05.1991",
 		ExperienceYears: 7,
 		SpeakerStatus:   "PUBLISHED",
 		VideoKey:        "Alex_Mercer.mp4",
 		AvatarKey:       "Alex_Mercer_avatar.jpg",
-		LikesCount:      142,
+		Likes:           []int{0, 1, 2, 3, 4, 5, 6},
 	},
 	{
 		ID:              2,
 		FullName:        "Елена Ростова",
 		TopicTitle:      "Автономные AI-агенты для E-commerce",
-		TopicDescription:  "Разбор архитектуры мультиагентных систем для автоматической обработки заказов и отзывов.",
-		SpeakingFee:     12000,
+		Description:     "Архитектор мультиагентных систем для автоматизации e-commerce процессов и обработки заказов.",
+		BirthDate:       "22.11.1995",
 		ExperienceYears: 5,
 		SpeakerStatus:   "PUBLISHED",
 		VideoKey:        "Elena_Rostova.mp4",
 		AvatarKey:       "Elena_Rostova_avatar.jpg",
-		LikesCount:      98,
+		Likes:           []int{0, 5, 9},
 	},
 	{
 		ID:              3,
 		FullName:        "Игорь Сидоров",
 		TopicTitle:      "Computer Vision в ритейле",
-		TopicDescription:  "Практический опыт внедрения YOLOv11 для распознавания дефектов на производстве.",
-		SpeakingFee:     20000,
+		Description:     "Ведущий инженер Computer Vision, специалист по внедрению нейросетей YOLO на производстве.",
+		BirthDate:       "03.08.1988",
 		ExperienceYears: 10,
 		SpeakerStatus:   "PUBLISHED",
 		VideoKey:        "Igor_Sidorov.mp4",
 		AvatarKey:       "Igor_Sidorov_avatar.jpg",
-		LikesCount:      215,
+		Likes:           []int{1, 2, 3, 4, 5, 6, 7, 8, 9},
 	},
 	{
 		ID:              4,
 		FullName:        "Сара Чен",
 		TopicTitle:      "AI Safety & Prompt Injection",
-		TopicDescription:  "Методы защиты корпоративных баз знаний и RAG-систем от атак через промпты.",
-		SpeakingFee:     18000,
+		Description:     "Исследователь безопасности RAG-систем и киберзащиты корпоративных баз знаний от промпт-атак.",
+		BirthDate:       "19.02.1994",
 		ExperienceYears: 6,
-		SpeakerStatus:   "DRAFT", // Черновик для страницы Добавления
+		SpeakerStatus:   "DRAFT",
 		VideoKey:        "Sarah_Chen.mp4",
 		AvatarKey:       "Sarah_Chen_avatar.jpg",
-		LikesCount:      0,
+		Likes:           []int{},
 	},
 	{
 		ID:              5,
 		FullName:        "Удаленный Спикер",
 		TopicTitle:      "Устаревший доклад",
-		TopicDescription:  "Этот спикер удален и не выводится в интерфейсе.",
-		SpeakingFee:     50000,
+		Description:     "Этот спикер удален и не выводится в интерфейсе.",
+		BirthDate:       "01.01.2000",
 		ExperienceYears: 1,
-		SpeakerStatus:   "DELETED", // Не отображается в приложении
+		SpeakerStatus:   "DELETED",
 		VideoKey:        "Alex_Mercer.mp4",
 		AvatarKey:       "Alex_Mercer_avatar.jpg",
-		LikesCount:      0,
+		Likes:           []int{},
 	},
 }
 
@@ -119,8 +125,8 @@ func main() {
 		nextStr := c.Query("next") // Читаем параметр next
 
 		// Отбираем только опубликованных спикеров (SpeakerStatus == "PUBLISHED")
-		var published []AiSpeaker
-		for _, s := range speakersCollection {
+		var published []Speaker
+		for _, s := range Speakers {
 			if s.SpeakerStatus == "PUBLISHED" {
 				published = append(published, s)
 			}
@@ -159,18 +165,19 @@ func main() {
 
 		// Рендерим HTML-шаблон feed.html и передаем в него данные
 		c.HTML(http.StatusOK, "feed.html", gin.H{
-			"speaker":  selectedSpeaker,
-			"videoUrl": selectedSpeaker.VideoURL(),
+			"speaker":    selectedSpeaker,
+			"videoUrl":   selectedSpeaker.VideoURL(),
+			"likesCount": selectedSpeaker.LikesCount(),
 		})
 	})
 
 	// GET /draft (Экран "Добавление")
 	// Отображает услугу со статусом DRAFT
 	r.GET("/draft", func(c *gin.Context) {
-		var draftSpeaker *AiSpeaker
+		var draftSpeaker *Speaker
 
 		// Ищем первого спикера со статусом DRAFT
-		for _, s := range speakersCollection {
+		for _, s := range Speakers {
 			if s.SpeakerStatus == "DRAFT" {
 				draftSpeaker = &s
 				break
@@ -184,8 +191,8 @@ func main() {
 
 		// Рендерим HTML-шаблон draft.html
 		c.HTML(http.StatusOK, "draft.html", gin.H{
-			"speaker":  draftSpeaker,
-			"videoUrl": draftSpeaker.VideoURL(),
+			"speaker":   draftSpeaker,
+			"videoUrl":  draftSpeaker.VideoURL(),
 			"avatarUrl": draftSpeaker.AvatarURL(),
 		})
 	})
@@ -203,14 +210,15 @@ func main() {
 		// Собираем список карточек для отображения
 		var result []map[string]interface{}
 
-		for _, s := range speakersCollection {
+		for _, s := range Speakers {
 			// Исключаем статусы DELETED и DRAFT
 			if s.SpeakerStatus != "DELETED" && s.SpeakerStatus != "DRAFT" {
 				if s.ExperienceYears >= minExp {
 					result = append(result, map[string]interface{}{
-						"speaker":   s,
-						"videoUrl":  s.VideoURL(),
-						"avatarUrl": s.AvatarURL(),
+						"speaker":    s,
+						"videoUrl":   s.VideoURL(),
+						"avatarUrl":  s.AvatarURL(),
+						"likesCount": s.LikesCount(),
 					})
 				}
 			}
@@ -218,7 +226,7 @@ func main() {
 
 		// Рендерим HTML-шаблон catalog.html
 		c.HTML(http.StatusOK, "catalog.html", gin.H{
-			"speakers":       result,
+			"speakers":      result,
 			"minExperience": minExperienceStr, // Сохраняем введенное значение фильтра
 		})
 	})

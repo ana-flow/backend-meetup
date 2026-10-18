@@ -17,27 +17,25 @@
 
             <!-- Элементы поверх видео -->
             <div class="feed-video-overlay">
+                <!-- Левая часть: Имя, тема и короткое описание (2 строки) -->
                 <div class="feed-speaker-info">
                     <div class="feed-speaker-name">{{ .speaker.FullName }}</div>
                     <div class="feed-topic-title">{{ .speaker.TopicTitle }}</div>
-                    
-                    <!-- 2 поля по теме: Гонорар и Опыт -->
-                    <div class="feed-meta-tags">
-                        <span class="feed-tag">💰 {{ .speaker.SpeakingFee }} ₽</span>
-                        <span class="feed-tag">⭐ {{ .speaker.ExperienceYears }} лет опыта</span>
-                    </div>
-
-                    <div class="feed-topic-description">{{ .speaker.TopicDescription }}</div>
+                    <div class="feed-topic-description">{{ .speaker.Description }}</div>
                 </div>
 
-                <!-- Правая боковая колонка с иконками -->
+                <!-- Единая правая боковая колонка: параметры по теме и кнопки -->
                 <div class="feed-action-sidebar">
+                    <!-- Параметры по теме -->
+                    <div class="feed-sidebar-tag">🎂 {{ .speaker.BirthDate }}</div>
+                    <div class="feed-sidebar-tag">⭐ {{ .speaker.ExperienceYears }} лет</div>
+
+                    <!-- Закруглённая кнопка лайков -->
                     <div class="feed-action-btn">
-                        ❤️
-                        <span class="feed-btn-count">{{ .speaker.LikesCount }}</span>
+                        ❤️ <span class="feed-btn-count">{{ .likesCount }}</span>
                     </div>
                     
-                    <!-- Кнопка перехода к следующему спикеру -->
+                    <!-- Закруглённая кнопка перехода к следующему спикеру -->
                     <a href="/feed?id={{ .speaker.ID }}&next=true" class="feed-action-btn" title="Следующий">
                         ➔
                     </a>
@@ -45,7 +43,7 @@
             </div>
         </div>
 
-        <!-- Нижняя навигационная панель -->
+        <!-- Белая нижняя навигационная панель -->
         <nav class="tabbar">
             <a href="/feed" class="tab-item active">🎬<span>Лента</span></a>
             <a href="/draft" class="tab-item">➕<span>Добавление</span></a>

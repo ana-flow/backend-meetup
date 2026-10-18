@@ -3,9 +3,9 @@
 
 /* Переменные стилей */
 :root {
-    --primary-color: #0B1B3D;     /* тёмно-синий основной */
-    --accent-color: #2bb673;      /* фирменный зеленый A-Speakers */
-    --accent-hover: #249a60;       /* оттенок зеленого при нажатии */
+    --primary-color: #0B1B3D;     /* Тёмно-синий основной */
+    --accent-color: #2bb673;      /* Фирменный зеленый A-Speakers */
+    --accent-hover: #249a60;       /* Оттенок зеленого при нажатии */
     --bg-card-color: #F4F6F9;
     --text-dark: #1E293B;
     --text-light: #FFFFFF;
@@ -41,28 +41,25 @@ body {
 
 /* --- "Лента" --- */
 
-/* Блок-контейнер, координатная сетка для наложения градиента и текста поверх видео */
 .feed-video-wrapper {
     position: relative;
     width: 100%;
     height: 100%;
 }
 
-/* Видео, растянутое на 100% ширины и 100% высоты обёртки */ 
 .feed-bg-video {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-/* Градиент затемнения поверх видео в Ленте (для читемости текста) */
 .feed-video-overlay {
     position: absolute;
     bottom: 60px;
     left: 0;
     right: 0;
     top: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 100%);
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.1) 100%);
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -71,13 +68,14 @@ body {
 
 .feed-speaker-info {
     color: var(--text-light);
-    max-width: 75%;
+    max-width: 65%;
 }
 
 .feed-speaker-name {
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 4px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.6);
 }
 
 .feed-topic-title {
@@ -85,68 +83,74 @@ body {
     color: #FF6B35;
     font-weight: 600;
     margin-bottom: 8px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
 }
 
-/* Плашки (стоимость и опыт) */
-.feed-meta-tags {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 8px;
-}
-
-/* Те же плашки */
-.feed-tag {
-    background: rgba(255, 255, 255, 0.2);
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-size: 12px;
-}
-
-/*  */
+/* Описание доклада: максимум 2 строки с многоточием */
 .feed-topic-description {
     font-size: 12px;
-    opacity: 0.9;
+    color: #E2E8F0;
     line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-/* Боковая панель с кнопками (Лента) */
+/* Единая правая боковая колонка */
 .feed-action-sidebar {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 16px;
+    align-items: flex-end;
+    gap: 12px;
 }
 
-/* Зеленые круглые кнопки (Лайки и Следующий) */
+/* Контрастные полупрозрачные плашки для даты и опыта */
+.feed-sidebar-tag {
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #FFFFFF;
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Зелёные закруглённые кнопки-капсулы (овальные/rounded) */
 .feed-action-btn {
     background: var(--accent-color);
     border: none;
-    color: var(--primary-color); /* темно-синий текст внутри */
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
+    color: var(--primary-color);
+    padding: 10px 18px;
+    border-radius: 24px; /* Капсула */
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
+    gap: 6px;
     text-decoration: none;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 700;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     transition: background 0.2s, color 0.2s, transform 0.2s;
 }
 
-/* При наведении текст становится белыми: */
 .feed-action-btn:hover {
     color: #FFFFFF;
     background: var(--accent-hover);
-    transform: scale(1.05);
+    transform: translateY(-2px);
 }
 
 .feed-btn-count {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 700;
-    margin-top: 1px;
-    color: inherit; /* Наследует цвет родителя (синий -> белый) */
+    color: inherit;
 }
 
 /* --- Контейнер страниц Добавление и Плитка --- */
@@ -154,7 +158,7 @@ body {
     flex: 1;
     background-color: var(--bg-card-color);
     padding: 20px;
-    padding-top: 48px; /* Отступ 48px под вырез iPhone 14 */
+    padding-top: 48px;
     overflow-y: auto;
     padding-bottom: 80px;
 }
@@ -178,7 +182,6 @@ body {
     margin-bottom: 6px;
 }
 
-/* Капсульные / скругленные поля ввода */
 .form-control {
     width: 100%;
     padding: 10px 16px;
@@ -189,74 +192,111 @@ body {
     outline: none;
 }
 
-.form-control:focus {
-    border-color: #CBD5E1;
-    outline: none;
-}
-
 textarea.form-control {
-    border-radius: 12px; /* для многострочного поля делаем более прямоугольным */
+    border-radius: 12px;
 }
 
-/* Блок-обёртка для двух медиа - аватарки и видео */
+/* Обёртка для медиа-превью */
 .media-preview-container {
     display: flex;
-    gap: 10px;
-    margin-bottom: 16px;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
 }
 
-/* Прямоугольный бокс для медиа (аватарка/видео) */
-.media-preview-box {
-    flex: 1;
-    height: 120px;
-    background: #E2E8F0;
-    border-radius: 12px;
+/* Квадратный/круглый бокс для аватарки */
+.media-avatar-box {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%; /* Сделайте 16px для скругленного квадрата */
     overflow: hidden;
-    position: relative;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    background: #E2E8F0;
 }
 
-.media-preview-box img {
+.media-avatar-box img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; /* сохраняет пропорции без растягивания */
 }
 
-.media-preview-box video {
+/* Вертикальный бокс для видео (пропорции 9:16) */
+.media-video-box {
+    width: 160px;       /* вытянутое аккуратное окошко */
+    height: 240px;      /* вертикальный формат */
+    border-radius: 16px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.media-video-box video {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    background-color: #000;
+    object-fit: cover;  /* видео полностью заполняет блок без чёрных полос */
 }
 
 /* --- "Плитка" --- */
 .catalog-filter-form {
     display: flex;
-    gap: 8px;
+    align-items: center; /* Четкое выравнивание всех элементов по центру по вертикали */
+    gap: 10px;
     margin-bottom: 16px;
-    align-items: flex-end;
+    background: white;
+    padding: 12px 14px;
+    border-radius: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
 }
 
-/* Кнопка "Поиск" в Плитке */
+.catalog-filter-label {
+    font-size: 11px;
+    color: #64748B;
+    font-weight: 600;
+    line-height: 1.2;
+    max-width: 90px;
+}
+
+.filter-slider-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.filter-range-input {
+    width: 100%;
+    accent-color: var(--accent-color);
+    cursor: pointer;
+}
+
+.filter-value-badge {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary-color);
+    white-space: nowrap;
+}
+
 .catalog-search-btn {
     background-color: var(--accent-color);
-    color: var(--primary-color); /* Основной темно-синий цвет текста */
+    color: var(--primary-color);
     border: none;
-    border-radius: 20px; /* Скругленная форма в тон полю ввода */
-    padding: 0 18px;
-    height: 38px;
+    border-radius: 20px;
+    padding: 0 14px;
+    height: 34px;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 12px;
     cursor: pointer;
+    white-space: nowrap;
     transition: background-color 0.2s, color 0.2s;
 }
 
-/* При наведении текст кнопки становится белым */
 .catalog-search-btn:hover {
     color: #FFFFFF;
     background-color: var(--accent-hover);
 }
 
-/* Двухколоночная сетка для карточек */
+/* Двухколоночная сетка */
 .catalog-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -271,21 +311,27 @@ textarea.form-control {
     text-decoration: none;
     color: inherit;
     transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
 }
 
 .catalog-speaker-card:hover {
     transform: translateY(-4px);
 }
 
-/* Картинка-превью (аватар) */
 .catalog-card-thumb {
     width: 100%;
     height: 120px;
     object-fit: cover;
+    display: block;
 }
 
 .catalog-card-body {
     padding: 10px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: space-between;
 }
 
 .catalog-card-name {
@@ -309,32 +355,33 @@ textarea.form-control {
     color: #FF6B35;
 }
 
-/* --- Tabbar --- */
+/* --- Белая нижняя панель навигации --- */
 .tabbar {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
     height: 60px;
-    background-color: var(--primary-color);
+    background-color: #FFFFFF; /* Белый фон */
     display: flex;
     justify-content: space-around;
     align-items: center;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    border-top: 1px solid #E2E8F0;
     z-index: 10;
 }
 
 .tab-item {
-    color: #94A3B8;
+    color: #64748B;
     text-decoration: none;
     font-size: 11px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 2px;
+    font-weight: 500;
 }
 
 .tab-item.active {
-    color: #FF6B35;
-    font-weight: 600;
+    color: var(--accent-color); /* Фирменный зеленый */
+    font-weight: 700;
 }
