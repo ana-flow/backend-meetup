@@ -14,7 +14,7 @@ const MinioBaseURL = "http://localhost:9000/meetup-bucket"
 
 // Speaker - структура (struct) в Go
 // Описывает сущность "Спикер по ИИ" по предметной области.
-// Все поля пишутся с большой буквы, чтобы Go разрешил их чтение снаружи (публичные поля).
+// Все поля пишутся с большой буквы, чтобы Go разрешил их чтение снаружи (публичные поля)
 type Speaker struct {
 	ID              int    `json:"id"`
 	FullName        string `json:"fullName"`
@@ -89,7 +89,7 @@ var Speakers = []Speaker{
 		Description:     "Исследователь безопасности RAG-систем и киберзащиты корпоративных баз знаний от промпт-атак.",
 		BirthDate:       "19.02.1994",
 		ExperienceYears: 6,
-		SpeakerStatus:   "DRAFT",
+		SpeakerStatus:   "DRAFT", // Черновик для страницы Добавления
 		VideoKey:        "Sarah_Chen.mp4",
 		AvatarKey:       "Sarah_Chen_avatar.jpg",
 		Likes:           []int{},
@@ -101,7 +101,7 @@ var Speakers = []Speaker{
 		Description:     "Этот спикер удален и не выводится в интерфейсе.",
 		BirthDate:       "01.01.2000",
 		ExperienceYears: 1,
-		SpeakerStatus:   "DELETED",
+		SpeakerStatus:   "DELETED", // Не отображается в приложении
 		VideoKey:        "Alex_Mercer.mp4",
 		AvatarKey:       "Alex_Mercer_avatar.jpg",
 		Likes:           []int{},
@@ -109,7 +109,7 @@ var Speakers = []Speaker{
 }
 
 func main() {
-	// Создаем экземпляра роутера (r - router) Gin с логированием по умолчанию
+	// Создаем экземпляр роутера (r - router) Gin с логированием по умолчанию
 	r := gin.Default()
 
 	// Загружаем HTML-шаблоны из папки templates
@@ -154,7 +154,7 @@ func main() {
 
 			if currentIndex != -1 {
 				if nextStr == "true" {
-					// Если указан next=true, берем следующего элемента (с зацикливанием по кругу)
+					// Если указан next=true, берем следующий элемент (с зацикливанием по кругу)
 					nextIndex := (currentIndex + 1) % len(published)
 					selectedSpeaker = published[nextIndex]
 				} else {
